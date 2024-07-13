@@ -14,7 +14,6 @@ import { CardsList } from "../components/CardList";
 import { useNavigation } from "@react-navigation/native";
 import { useDispatch, useSelector } from "react-redux";
 import { setCtrSelected } from "../features/ctrSlice";
-import LinearGradient from "react-native-linear-gradient";
 
 export const Main = () => {
 
@@ -35,12 +34,10 @@ export const Main = () => {
 
         <ScrollView>
             <SafeAreaView style={styles.safeArea} >
-                <LinearGradient colors={['#4c669f', '#3b5998', '#192f6a']} style={styles.linearGradient}>
 
                     <User />
                     <SearchCtr onChangeText={setCtrToSearch} value={ctrToSearch} onSearch={() => navigateToCtrDetail()} />
                     <CardsList />
-                </LinearGradient>
 
             </SafeAreaView>
         </ScrollView>

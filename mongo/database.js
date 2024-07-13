@@ -1,1 +1,1 @@
-export const DATABASE_URL = "https://transcurrin-app-back.vercel.app/api"
+export const DATABASE_URL = "https://server-transcurrin.vercel.app/api"

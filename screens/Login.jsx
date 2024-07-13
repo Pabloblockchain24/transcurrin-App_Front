@@ -1,24 +1,17 @@
 import { SafeAreaView } from "react-native-safe-area-context";
-import {
-  Pressable,
-  Image,
-  View,
-  StyleSheet,
-  Text,
-  TextInput,
-  useWindowDimensions
-} from "react-native";
+import { Pressable, Image, View, StyleSheet, Text, TextInput, useWindowDimensions, Alert } from "react-native";
 import { useState, useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { setUserAuth } from "../features/authSlice";
 import { useLoginMutation } from "../services/authServices";
 
 export const Login = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
-  const [login, { isLoading, isSuccess, isError, data, error }] = useLoginMutation();
+  const [login, { isLoading, isSuccess }] = useLoginMutation();
   const [credentials, setCredentials] = useState({ email: '', password: '' });
+  const [loading, setLoading] = useState(false); // Variable de estado para manejar la carga
 
   const handleInputChange = (name, value) => {
     setCredentials({ ...credentials, [name]: value });
@@ -26,16 +19,26 @@ export const Login = () => {
 
   const handleLogin = async () => {
     try {
-      const user = await login(credentials).unwrap();
-      dispatch(setUserAuth(user));
+      setLoading(true);
+      const response = await login(credentials);
+      const { data } = response;
+      if (data && data.token) {
+        dispatch(setUserAuth(data))
+        navigation.navigate('MainStack');
+      } else {
+        Alert.alert('Error', 'Credenciales incorrectas. Por favor, inténtelo de nuevo.');
+      }
     } catch (err) {
       console.error('Failed to login: ', err);
+      Alert.alert('Error', 'Hubo un problema al intentar iniciar sesión. Por favor, inténtelo de nuevo más tarde.');
+    } finally {
+      setLoading(false);
     }
   };
 
   useEffect(() => {
     if (isSuccess) {
-      navigation.navigate('Main');
+      navigation.navigate('MainStack');
     }
   }, [isSuccess]);
 

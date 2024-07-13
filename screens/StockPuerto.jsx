@@ -5,18 +5,27 @@ import { useGetServicesQuery } from "../services/appServices";
 
 export const StockPuerto = () => {
     const fechaActualDD_MM = moment().format("DD-MM");
-    const { data: contenedores, isLoading, error } = useGetServicesQuery();
+    const { data, isLoading, error } = useGetServicesQuery();
+
     const [contenedoresPuerto, setContenedoresPuerto] = useState([]);
 
+
+
+      const diasEnPuerto = (fechaISO) => {
+        const fechaEta = new Date(fechaISO);
+        const fechaHoy = new Date()
+        const diferenciaMilisegundos = fechaHoy - fechaEta
+        return (Math.ceil(diferenciaMilisegundos/(1000*60*60*24)))
+    }
+
     useEffect(() => {
-        if (contenedores) {
-            const filtrados = contenedores.filter((contenedor) => {
-                const etaDate = moment(contenedor.ETA, "DD-MM-YYYY");
-                return etaDate.isSameOrBefore(moment(), 'day') && contenedor.fecha_retiro === "";
+        if (data) {
+            const filtrados = data.filter((contenedor) => {
+                return diasEnPuerto(contenedor.eta) > 0 && contenedor.retiroPuerto === null;
             });
             setContenedoresPuerto(filtrados);
         }
-    }, [contenedores, fechaActualDD_MM]);
+    }, [data, fechaActualDD_MM]);
 
     if (isLoading) {
         return <Text>Cargando</Text>;
@@ -39,12 +48,12 @@ export const StockPuerto = () => {
                 </View>
                 {contenedoresPuerto.length > 0 ? (
                     contenedoresPuerto.map((contenedor, index) => (
-                        <View key={contenedor.code} style={[styles.row, index % 2 === 0 ? styles.rowEven : styles.rowOdd]}>
-                            <Text style={[styles.cell, styles.rowText]}>{contenedor.NAVE}</Text>
-                            <Text style={[styles.cell, styles.rowText]}>{contenedor.code}</Text>
-                            <Text style={[styles.cell, styles.rowText]}>{contenedor.carpeta}</Text>
-                            <Text style={[styles.cell, styles.rowText]}>{contenedor.ETA}</Text>
-                            <Text style={[styles.cell, styles.rowText]}>{contenedor.producto}</Text>
+                        <View key={contenedor.container} style={[styles.row, index % 2 === 0 ? styles.rowEven : styles.rowOdd]}>
+                            <Text style={[styles.cell, styles.rowText]}>{contenedor.nave}</Text>
+                            <Text style={[styles.cell, styles.rowText]}>{contenedor.container}</Text>
+                            <Text style={[styles.cell, styles.rowText]}>{contenedor.ref}</Text>
+                            <Text style={[styles.cell, styles.rowText]}>{contenedor.eta}</Text>
+                            <Text style={[styles.cell, styles.rowText]}>{contenedor.tipo}</Text>
                         </View>
                     ))
                 ) : (

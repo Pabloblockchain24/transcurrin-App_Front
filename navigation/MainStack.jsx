@@ -20,7 +20,7 @@ export const MainStack = () => {
             }}>
 
             <Tabs.Screen
-                name="Home"
+                name="Main"
                 component={Home}
                 options={{ tabBarIcon: () => <FontAwesome5 name="home" size={18} color="black" /> }}
             />

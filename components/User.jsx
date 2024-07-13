@@ -3,6 +3,7 @@ import { View, Image, Text, StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
 
 export const User = () => {
+
   const nameUser = useSelector(state => state.auth.user.name);
   return (
     <View style={styles.container}>

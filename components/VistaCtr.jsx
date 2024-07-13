@@ -9,36 +9,36 @@ export const VistaCtr = () => {
         <View style={styles.card}>
             <View style={styles.header}>
                 <Octicons name="container" size={24} color="#fff" />
-                <Text style={styles.headerText}>{ctrFiltered.code}</Text>
+                <Text style={styles.headerText}>{ctrFiltered.container}</Text>
             </View>
             <View style={styles.body}>
                 <View style={styles.row}>
                     <Text style={styles.label}>Código:</Text>
-                    <Text style={styles.value}>{ctrFiltered.code}</Text>
+                    <Text style={styles.value}>{ctrFiltered.container}</Text>
                 </View>
                 <View style={styles.row}>
                     <Text style={styles.label}>Producto:</Text>
-                    <Text style={styles.value}>{ctrFiltered.producto}</Text>
+                    <Text style={styles.value}>{ctrFiltered.tipo}</Text>
                 </View>
                 <View style={styles.row}>
                     <Text style={styles.label}>Fecha Retiro Puerto:</Text>
-                    <Text style={styles.value}>{ctrFiltered.fecha_retiro}</Text>
+                    <Text style={styles.value}>{ctrFiltered.retiroPuerto}</Text>
                 </View>
                 <View style={styles.row}>
                     <Text style={styles.label}>Chofer Entrega Planta: </Text>
-                    <Text style={styles.value}>{ctrFiltered.chofer_entrega}</Text>
+                    <Text style={styles.value}>{ctrFiltered.choferEntrega}</Text>
                 </View>
                 <View style={styles.row}>
                     <Text style={styles.label}>Fecha Entrega Planta:</Text>
-                    <Text style={styles.value}>{ctrFiltered.fecha_entrega}</Text>
+                    <Text style={styles.value}>{ctrFiltered.entrega}</Text>
                 </View>
                 <View style={styles.row}>
                     <Text style={styles.label}>Fecha Devolución Vacio:</Text>
-                    <Text style={styles.value}>{ctrFiltered.fecha_entrega}</Text>
+                    <Text style={styles.value}>{ctrFiltered.fechaVacio}</Text>
                 </View>
                 <View style={styles.row}>
                     <Text style={styles.label}>Deposito Devolución:</Text>
-                    <Text style={styles.value}>{ctrFiltered.dep_DEV}</Text>
+                    <Text style={styles.value}>{ctrFiltered.depotDevolucion}</Text>
                 </View>
    
 

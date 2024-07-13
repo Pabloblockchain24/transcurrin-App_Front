@@ -1,34 +1,41 @@
 import React from "react";
 import { View, ScrollView, StyleSheet, Text } from "react-native";
 import { Card } from "./Card";
-
 import moment from 'moment';
 import { useGetServicesQuery } from "../services/appServices";
 
 
 export const CardsList = () => {
+  const { data, isLoading, error } = useGetServicesQuery();
 
-  const { data: contenedores, isLoading, error } = useGetServicesQuery();
+  const diasEnPuerto = (fechaISO) => {
+    const fechaEta = new Date(fechaISO);
+    const fechaHoy = new Date()
+    const diferenciaMilisegundos = fechaHoy - fechaEta
+    return (Math.ceil(diferenciaMilisegundos/(1000*60*60*24)))
+}
+
+
+
 
   if (isLoading) {
     return <Text>Cargando</Text>;
   }
 
-  const unidadesPuerto = contenedores.filter((contenedor) => {
-    const etaDate = moment(contenedor.ETA, "DD-MM-YYYY");
-    return etaDate.isSameOrBefore(moment(), 'day') && contenedor.fecha_retiro === "";
+  const unidadesPuerto = data.filter((contenedor) => {
+    return diasEnPuerto(contenedor.eta) > 0 && contenedor.retiroPuerto === null;
+  });
+
+const unidadesDeposito = data.filter((contenedor) => {
+  return contenedor.retiroPuerto !== null && contenedor.entrega === null;
 });
 
-const unidadesDeposito = contenedores.filter((contenedor) => {
-  return contenedor.fecha_entrega === "" && contenedor.fecha_retiro !== ""
+const entregasDia = data.filter((contenedor) => {
+  return contenedor.progEntrega !== null && contenedor.entrega === null 
 });
 
-const entregasDia = contenedores.filter((contenedor) => {
-  return contenedor.fecha_entrega === moment().format("DD-MM-YYYY");
-});
-
-const vaciosPendientes = contenedores.filter((contenedor) => {
-  return contenedor.fecha_retiro !== "" && contenedor.fecha_devolucion === "";
+const vaciosPendientes = data.filter((contenedor) => {
+  return contenedor.retiroPuerto !== null && diasEnPuerto(contenedor.eta) > 0 &&  contenedor.fechaVacio === null
 });
 
 
